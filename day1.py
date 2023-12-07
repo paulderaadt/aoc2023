@@ -72,6 +72,6 @@ def last_digit(line, digits):
         return str(DIGITS_MAP[str(digits[values.index(min(values))])[
                               ::-1]])
 
-data = Linereader("inputs/day1a.txt").content
+data = Linereader("inputs/day1a.txt")
 
 print(day1b(data))
