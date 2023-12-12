@@ -25,15 +25,6 @@ class Hand:
     def __repr__(self):
         return "".join(self.cards)
 
-    def __gt__(self, other):
-        if self.hand_score == other.hand_score:
-            for i in range(len(self.cards)):
-                if self.cards[i] == other.cards[i]:
-                    continue
-                else:
-                    return CARDVALS[self.cards[i]] > CARDVALS[other.cards[i]]
-        return self.hand_score > other.hand_score
-
     def __lt__(self, other):
         if self.hand_score == other.hand_score:
             for i in range(len(self.cards)):
