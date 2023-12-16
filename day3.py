@@ -1,53 +1,40 @@
+import re
+
 from utils.filereaders import Linereader
 from enum import Enum
+from re import finditer
 
 data = Linereader("inputs/day3a").parse()
+line_length = len(data[0])
+data = ["..." + line + "..." for line in data]
+data.insert(0, (line_length + 6) * ".")
+data.append((line_length + 6) * ".")
 
+chars = '#$%&*+-/=@'
+numbers = [re.finditer("\d{1,3}", line) for line in data]
+total = []
+y = 0
+for y, matches in enumerate(numbers):
+    for num in matches:
+        left = num.span()[0] - 1
+        right = num.span()[1] + 1
+        above = y - 1
+        below = y + 1
+        if any([char in data[y][left:right] for char in chars]):
+            total.append(data[y][left + 1:right - 1])
+            continue
+        if any([char in data[above][left:right] for char in chars]):
+            total.append(data[y][left + 1:right - 1])
+            continue
+        if any([char in data[below][left:right] for char in chars]):
+            total.append(data[y][left + 1:right - 1])
+            continue
 
-from re import finditer
-class Coordinate:
-    def __init__(self, y, x):
-        self.x = int(x)
-        self.y = int(y)
+total = [int(num) for num in total]
+print(sum(total))
 
-class Winds(Enum):
-    N = Coordinate(-1, 0)
-    NW =  Coordinate(-1, -1)
-    NE =  Coordinate(-1, 1)
-    S =  Coordinate(1, 0)
-    SE =  Coordinate(1, 1)
-    SW =  Coordinate(1, -1)
-    E =  Coordinate(0, -1)
-    W =  Coordinate(0, 1)
-
-
-class Symbol_Coordinate:
-    def __init__(self, y, x, symbol):
-        self.x = int(x)
-        self.y = int(y)
-        self.symbol = symbol
-
-    def find_adjecent_numbers(self, data):
-        for wind in Winds:
-            x = self.x + wind.value.x
-            y = self.y + wind.value.y
-            if data[y][x].isdigit():
-                print(data[y][x], y, x)
-                
-
-    def __repr__(self):
-        return f"{self.symbol} Y: {self.y} X: {self.x}"
-
-
-dont = '1234567890.'
-
-symbol_coordinates = []
-for y, line in enumerate(data):
-    for x, line in enumerate(line):
-        if data[y][x] not in dont:
-            symbol_coordinates.append(Symbol_Coordinate(y, x, data[y][x]))
-
-for coord in symbol_coordinates:
-    print(coord)
-    coord.find_adjecent_numbers(data)
-    
+gears = [re.finditer("\*", line) for line in data]
+ratios = 0
+for y, matches in enumerate(gears):
+    for gear in matches:
+        print(gear)
