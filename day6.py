@@ -3,11 +3,10 @@ from functools import reduce
 
 from utils.filereaders import Linereader
 
-
 data = Linereader("inputs/day6a.txt").parse()
-
 data = [line.split(" ") for line in data]
 data = [list(filter(lambda x: x != "", item)) for item in data]
+
 
 class Race:
     def __init__(self, duration, record):
@@ -19,12 +18,12 @@ class Race:
 
     def solve(self):
         '''
-        the solution is a limit on quadratix equation in the form of
+        the solution is a limit on quadratic equation in the form of
         (self.record-self.duration) * self.duration > self.record
-        -self.duration**2 + self.record*self.duration - self.record
-        a = 1
-        b = self.record
-        c = self.record
+        -self.duration**2 + self.record*self.duration - self.record = 0
+        a = -1
+        b = self.duration
+        c = =self.record
         abc formulate it to solve
         :return:
         '''
@@ -36,7 +35,6 @@ class Race:
             x2 -= 1
             x1 += 1
         return (x2 - x1) + 1
-
 
     def _abc_solver(self, a, b, c):
         x2 = (-b - sqrt(b**2 - 4 * a * c)) / 2 * a
